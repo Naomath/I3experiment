@@ -54,6 +54,7 @@ unsigned long get_ip_address(char *str_addr) {
     }
 
     memcpy(&ip_addr, host->h_addr_list[0], host->h_length);
+	printf("Resolved IP address: %x\n", ip_addr.s_addr);
     return ip_addr.s_addr;
 }
 

@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 
 	if(argc == 2) {
 		//server
-		int socket = set_udp_server(atoi(argv[2]));
+		int socket = set_udp_server(atoi(argv[1]));
 		tools = connect_to_client(socket);
 		printf("Connect to client\n");
 	} else if (argc == 5){

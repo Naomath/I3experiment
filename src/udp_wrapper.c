@@ -132,7 +132,7 @@ UdpTools *connect_to_client(int s) {
 		
 	socklen_t client_len = sizeof(*client);
 	while(1) {
-		int n = recvfrom(s, data, N, 0, (struct sockaddr *)client, &client_len);
+		int n = recvfrom(s, recv_data, N, 0, (struct sockaddr *)client, &client_len);
 		printf("%d bytes received\n", n);
 		if(n != 0 && memcmp(SYN, recv_data, header_bytes) == 0) {
 			//クライアントから接続あり

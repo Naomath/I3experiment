@@ -106,6 +106,7 @@ int connect_to_server(UdpTools *tools, char *url, int port) {
     setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 		
     socklen_t server_len = sizeof(*server);
+	unsigned char recv_data[N];
 	while(1) {
 		//送るデータは最初の1byteがheader
 		//次にurlのbytes数(url_len)としてint
@@ -113,8 +114,8 @@ int connect_to_server(UdpTools *tools, char *url, int port) {
 		//四つめにportとしてint 4bytes
 		printf("Send SYN to server\n");
 		sendto(s, send_data, send_size, 0 , (struct sockaddr *)server, server_len);
-		int n = recvfrom(s, data, N, 0, (struct sockaddr *)server, &server_len);
-		if(n >= 1 and memcmp(ACK_SYN, recv_data, header_bytes) == 0) {
+		int n = recvfrom(s, recv_data, N, 0, (struct sockaddr *)server, &server_len);
+		if(n >= 1 && memcmp(ACK_SYN, recv_data, header_bytes) == 0) {
 			//サーバーの応答あり
 			return 0;
 		} 

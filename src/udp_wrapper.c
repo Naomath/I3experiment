@@ -114,7 +114,7 @@ int connect_to_server(UdpTools *tools, char *url, int port) {
 		printf("Send SYN to server\n");
 		sendto(s, send_data, send_size, 0 , (struct sockaddr *)server, server_len);
 		int n = recvfrom(s, data, N, 0, (struct sockaddr *)server, &server_len);
-		if(n != 0 && memcmp(ACK_SYN, data, header_bytes) == 0) {
+		if(n >= -1 && memcmp(ACK_SYN, data, header_bytes) == 0) {
 			//サーバーの応答あり
 			return 0;
 		} 
@@ -126,7 +126,7 @@ UdpTools *connect_to_client(int s) {
 	unsigned char recv_data[N];
 	
 	struct timeval tv;
-    tv.tv_sec = 5;  // 1秒でタイムアウト
+    tv.tv_sec = 5;  // 5秒でタイムアウト
 	tv.tv_usec = 0; 
     setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 		
@@ -134,7 +134,7 @@ UdpTools *connect_to_client(int s) {
 	while(1) {
 		int n = recvfrom(s, recv_data, N, 0, (struct sockaddr *)client, &client_len);
 		printf("%d bytes received\n", n);
-		if(n != 0 && memcmp(SYN, recv_data, header_bytes) == 0) {
+		if(n >= 1 && memcmp(SYN, recv_data, header_bytes) == 0) {
 			//クライアントから接続あり
 			char *url[50];
 			int url_len;
@@ -142,7 +142,6 @@ UdpTools *connect_to_client(int s) {
 			memcpy((unsigned char *)&url_len, recv_data+header_bytes, 4);
 			memcpy((unsigned char *)url, recv_data+header_bytes+4, url_len);
 			memcpy((unsigned char *)&port, recv_data+header_bytes+4+url_len, 4);
-			
 			unsigned long host_ip = get_ip_address((char *)url);
 			//受け取ったクライアントのurlからipアドレスへと名前解決
 
@@ -150,7 +149,10 @@ UdpTools *connect_to_client(int s) {
 			client_addr->sin_family = AF_INET;
 			client_addr->sin_port = htons(port);
 			client_addr->sin_addr.s_addr = host_ip;
-			
+
+			printf("client IP:%lx\n", host_ip);	
+			printf("client PORT:%d\n", port);
+	
 			UdpTools *tools = (UdpTools *)malloc(sizeof(UdpTools));
 			tools->partner = client_addr;
 			tools->socket = s;

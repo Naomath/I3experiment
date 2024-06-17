@@ -101,7 +101,7 @@ int connect_to_server(UdpTools *tools, char *url, int port) {
 	memcpy(send_data+header_bytes+4+url_len, (unsigned char *)&port, 4);
 
 	struct timeval tv;
-    tv.tv_sec = 1;  // 1秒でタイムアウト
+    tv.tv_sec = 5;  // 1秒でタイムアウト
 	tv.tv_usec = 0; 
     setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 		
@@ -126,7 +126,7 @@ UdpTools *connect_to_client(int s) {
 	unsigned char recv_data[N];
 	
 	struct timeval tv;
-    tv.tv_sec = 1;  // 1秒でタイムアウト
+    tv.tv_sec = 5;  // 1秒でタイムアウト
 	tv.tv_usec = 0; 
     setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 		

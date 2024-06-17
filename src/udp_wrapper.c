@@ -39,18 +39,22 @@ int set_udp_server(int port) {
 }
 
 unsigned long get_ip_address(char *str_addr) {
-	unsigned long ip_addr = inet_addr(str_addr);
-	if(ip_addr == -1) {
-		//ホストがurlで指定して入力された場合
-		struct hostent *host = gethostbyname(str_addr);
-		//名前解決
-		if(host == NULL) {
-			perror("Failed to resolve %s to IP address.\n");
-			exit(1);
-		}
-		memcpy((char *) &ip_addr, (char *) host->h_addr_list[0], host->h_length);
-	}
-	return ip_addr;
+    struct in_addr ip_addr;
+
+    // IPアドレスとして解析を試みる
+    if (inet_pton(AF_INET, str_addr, &ip_addr) == 1) {
+        return ip_addr.s_addr;
+    }
+
+    // 失敗した場合、ホスト名として解析を試みる
+    struct hostent *host = gethostbyname(str_addr);
+    if (host == NULL) {
+        fprintf(stderr, "Failed to resolve %s to IP address.\n", str_addr);
+        exit(1);
+    }
+
+    memcpy(&ip_addr, host->h_addr_list[0], host->h_length);
+    return ip_addr.s_addr;
 }
 
 UdpTools *set_socket_udp_client(unsigned long server_ip, int server_port, int client_port) {
@@ -69,13 +73,14 @@ UdpTools *set_socket_udp_client(unsigned long server_ip, int server_port, int cl
 		perror("Failed to bind socket.\n");
 		exit(1);
 	}
-
+	printf("Succeed to bind\n");
 	
 	struct sockaddr_in *server_addr = (struct sockaddr_in *)malloc(sizeof(struct sockaddr_in));
 	server_addr->sin_family = AF_INET;
 	server_addr->sin_port = htons(server_port);
 	server_addr->sin_addr.s_addr = server_ip;
-	
+	printf("server IP:%lx\n", server_ip);	
+	printf("server PORT:%d\n", server_port);
 	UdpTools *tools = (UdpTools *)malloc(sizeof(UdpTools));
 	tools->partner = server_addr;
 	tools->socket = s;
@@ -127,6 +132,7 @@ UdpTools *connect_to_client(int s) {
 	socklen_t client_len = sizeof(*client);
 	while(1) {
 		int n = recvfrom(s, data, N, 0, (struct sockaddr *)client, &client_len);
+		printf("%n bytes received\n", n);
 		if(n != 0 && memcmp(SYN, recv_data, header_bytes) == 0) {
 			//クライアントから接続あり
 			char *url[50];

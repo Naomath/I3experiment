@@ -19,5 +19,5 @@ VPNは東大VPNがあるが、client to client の通信は許可されていな
 1. https://localtonet.com/blog/how-to-use-localtonet に書いてあるように、ダウンロードして、```open localtonet```までする。これでシェルが開く。
 2. https://localtonet.com/ にアクセスして、無料プランのアカウントを作り、ダッシュボードに移動して、AuthTokenをコピーする。
 3. シェルにコピーしてAuthTokenをペーストする。
-4. ダッシュボードでhttps://localtonet.com/documents/udp　を参考にトンネリングをする。入力するIPとポートはローカルの使いたいもの。AuthTokenはDefaultのFreeのもので良い。
+4. ダッシュボードで　https://localtonet.com/documents/udp　を参考にトンネリングをする。入力するIPとポートはローカルの使いたいもの。AuthTokenはDefaultのFreeのもので良い。
 5. スタートをし、シェルでも```Status OK```となっていることを確認する。

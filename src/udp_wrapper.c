@@ -100,10 +100,7 @@ int connect_to_server(UdpTools *tools, char *url, int port) {
 	memcpy(send_data+header_bytes+4, (unsigned char *)url, url_len);
 	memcpy(send_data+header_bytes+4+url_len, (unsigned char *)&port, 4);
 
-	struct timeval tv;
-    tv.tv_sec = 5;  // 1秒でタイムアウト
-	tv.tv_usec = 0; 
-    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+	set_recv_timeout(s, 5, 0);
 		
     socklen_t server_len = sizeof(*server);
 	unsigned char recv_data[N];
@@ -123,17 +120,14 @@ int connect_to_server(UdpTools *tools, char *url, int port) {
 }
 
 UdpTools *connect_to_client(int s) {
-	struct sockaddr_in *client = (struct sockaddr_in *)malloc(sizeof(struct sockaddr_in));
 	unsigned char recv_data[N];
 	
-	struct timeval tv;
-    tv.tv_sec = 5;  // 5秒でタイムアウト
-	tv.tv_usec = 0; 
-    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+	set_recv_timeout(s, 5, 0);
 		
-	socklen_t client_len = sizeof(*client);
+	struct sockaddr_in *tmp_client = (struct sockaddr_in *)malloc(sizeof(struct sockaddr_in));
+	socklen_t tmp_client_len = sizeof(*tmp_client);
 	while(1) {
-		int n = recvfrom(s, recv_data, N, 0, (struct sockaddr *)client, &client_len);
+		int n = recvfrom(s, recv_data, N, 0, (struct sockaddr *)tmp_client, &tmp_client_len);
 		printf("%d bytes received\n", n);
 		if(n >= 1 && memcmp(SYN, recv_data, header_bytes) == 0) {
 			//クライアントから接続あり
@@ -166,5 +160,12 @@ UdpTools *connect_to_client(int s) {
 			return tools;
 		}
 	}
+}
+
+void set_recv_timeout(int s, int sec, int usec) {
+	struct timeval tv;
+    tv.tv_sec = sec;  // 5秒でタイムアウト
+	tv.tv_usec = usec; 
+    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 }
 

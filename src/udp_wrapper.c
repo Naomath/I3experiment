@@ -114,7 +114,7 @@ int connect_to_server(UdpTools *tools, char *url, int port) {
 		printf("Send SYN to server\n");
 		sendto(s, send_data, send_size, 0 , (struct sockaddr *)server, server_len);
 		int n = recvfrom(s, data, N, 0, (struct sockaddr *)server, &server_len);
-		if(n >= 1 && memcmp(ACK_SYN, data, header_bytes) == 0) {
+		if(n >= 1) {
 			//サーバーの応答あり
 			return 0;
 		} 

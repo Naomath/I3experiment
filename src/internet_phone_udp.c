@@ -25,9 +25,10 @@ int main(int argc, char **argv) {
 		int socket = set_udp_server(atoi(argv[1]));
 		tools = connect_to_client(socket);
 		printf("Connect to client\n");
-	} else if (argc == 5){
+	} else if (argc == 6){
 		//client
 		unsigned long server_ip = get_ip_address(argv[3]);
+		printf("server IP:%lx\n", server_ip);	
 		int server_port = atoi(argv[4]);
 		int client_port = atoi(argv[5]);
 		tools = set_socket_udp_client(server_ip, server_port, client_port);

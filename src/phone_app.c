@@ -7,10 +7,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/select.h>
+#include <string.h>
 
 #include "udp_wrapper.h"
 
-#define N 1000
+#define N 10000
 
 int main(int argc, char **argv) {
 	if(argc != 2 && argc != 6) {
@@ -44,7 +46,46 @@ int main(int argc, char **argv) {
 	int fd = fileno(fp);
 	unsigned char send_data[N];
 	unsigned char recv_data[N];
-	while(1) {
+
+	struct timeval tv;
+    fd_set readfds, fds;
+    int ret_select;
+    //int ret_recv;
+
+    /* タイムアウト時間を設定 */
+    tv.tv_sec = 0;
+    tv.tv_usec = 100;
+
+    /* 読み込みFD集合を空にする */
+    FD_ZERO(&readfds);
+    // 読み込みFD集合にsockfdを追加
+    FD_SET(tools->socket, &readfds);
+    while (1)
+    {
+		memcpy(&fds, &readfds, sizeof(fd_set));
+        ret_select = select(tools->socket + 1, &fds, NULL, NULL, &tv);
+        if (ret_select == -1) {
+            /* select関数がエラー */
+            printf("select error\n");
+            return -1;
+        }
+
+        if (ret_select == 0) {
+            /* 読み込み可能になったFDの数が0なのでタイムアウトと判断 */
+            int send_size = read(fd, send_data, N);
+            sendto(tools->socket, send_data, send_size, 0 , (struct sockaddr *)tools->partner, sizeof(*(tools->partner)));
+        }
+        else {
+            /* 読み込み可能 */
+            struct sockaddr_in client;
+            socklen_t client_len = sizeof(client);
+            int n = recvfrom(tools->socket, recv_data, N, 0, (struct sockaddr *)&client, &client_len);
+            write(1, recv_data, n);
+        }
+
+    }
+    /*
+    while(1) {
 		int send_size = read(fd, send_data, N);
 		sendto(tools->socket, send_data, send_size, 0 , (struct sockaddr *)tools->partner, sizeof(*(tools->partner)));
 		struct sockaddr_in client;
@@ -52,5 +93,6 @@ int main(int argc, char **argv) {
 		int n = recvfrom(tools->socket, recv_data, N, 0, (struct sockaddr *)&client, &client_len);
         write(1, recv_data, n);
 	}
+    */
 	pclose(fp);
 }

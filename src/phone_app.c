@@ -10,7 +10,7 @@
 
 #include "udp_wrapper.h"
 
-#define N 100000
+#define N 1000
 
 int main(int argc, char **argv) {
 	if(argc != 2 && argc != 6) {

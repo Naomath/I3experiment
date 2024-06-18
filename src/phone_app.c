@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 	unsigned char send_data[N];
 	unsigned char recv_data[N];
 	while(1) {
-		int send_size = read(fp, send_data, N);
+		int send_size = read(fd, send_data, N);
 		sendto(tools->socket, send_data, send_size, 0 , (struct sockaddr *)tools->partner, sizeof(*(tools->partner)));
 		struct sockaddr_in client;
 		socklen_t client_len = sizeof(client);

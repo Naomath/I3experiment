@@ -18,6 +18,8 @@
 #define header_bytes 2
 #define N 100
 
+void set_recv_timeout(int s, int sec, int usec);
+
 int set_udp_server(int port) {
 	int s = socket(AF_INET, SOCK_DGRAM, 0);
 	if (s < 0 ) {
@@ -163,9 +165,9 @@ UdpTools *connect_to_client(int s) {
 }
 
 void set_recv_timeout(int s, int sec, int usec) {
-	struct timeval tv;
-    tv.tv_sec = sec;  // 5秒でタイムアウト
-	tv.tv_usec = usec; 
-    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+	struct timeval *tv = (struct timeval *)malloc(sizeof(struct timeval));
+    tv->tv_sec = sec;  // 5秒でタイムアウト
+	tv->tv_usec = usec; 
+    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, tv, sizeof(*tv));
 }
 

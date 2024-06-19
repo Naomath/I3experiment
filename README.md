@@ -18,6 +18,9 @@ IPv6が一番簡単かもしれませんが、機器が接続しているルー�
 その結果、jp1.localto.netの4000が同一のエンドポイントとして提供されるので、ここに対するパケットは全て
 ローカルホストのポート50000に転送されることになる。
 
+説明スライド
+https://docs.google.com/presentation/d/1tWqSmZ0ghf1Xom8pAZousgrSz0tkc6N_2IPybLRH8LE/edit#slide=id.g2e6ba33efdc_1_397
+
 ### 準備
 1. https://localtonet.com/blog/how-to-use-localtonet に書いてあるように、ダウンロードして、```open localtonet```までする。これでシェルが開く。
 2. https://localtonet.com/ にアクセスして、無料プランのアカウントを作り、ダッシュボードに移動して、AuthTokenをコピーする。

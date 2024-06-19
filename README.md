@@ -24,6 +24,7 @@ IPv6が一番簡単かもしれませんが、機器が接続しているルー�
 3. シェルにコピーしてAuthTokenをペーストする。
 4. [このリンク](https://localtonet.com/documents/udp) を参考にダッシュボードでトンネリングをする。入力するIPとポートはローカルの使いたいもの。AuthTokenはDefaultのFreeのもの。
 5. スタートをし、シェルでも```Status OK```となっていることを確認する。
+6. soxコマンドが入っていなければ、```brew install sox```
 
 ### 実行
 クライアント側とサーバー側を決めて、どちらもlocaltonetを利用して、トンネルを作成する。
@@ -32,14 +33,14 @@ IPv6が一番簡単かもしれませんが、機器が接続しているルー�
 ```bash
 mkdir bin
 make
-./bin/thread <自分のlocaltonetのURL> <自分のlocaltonetのport> <サーバーのlocaltonetのURL> <サーバーのlocaltonetのport> <自分のlocaltonetにトンネルしてるポート>
+./bin/thread <自分のlocaltonetのURL> <自分のlocaltonetのport> <サーバーのlocaltonetのURL> <サーバーのlocaltonetのport> <自分のlocaltonetにトンネルしてるポート> | play -t raw -b 16 -c 1 -e s -r 48000 -
 ```
 
 サーバー側
 ```bash
 mkdir bin
 make
-./bin/thread <自分のlocaltonetにトンネルしてるポート>
+./bin/thread <自分のlocaltonetにトンネルしてるポート> | play -t raw -b 16 -c 1 -e s -r 48000 -
 ```
 
 クライアント側とサーバー側のどちらからコマンドを実行しても問題ない

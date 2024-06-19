@@ -25,7 +25,8 @@ https://docs.google.com/presentation/d/1tWqSmZ0ghf1Xom8pAZousgrSz0tkc6N_2IPybLRH
 1. https://localtonet.com/blog/how-to-use-localtonet に書いてあるように、ダウンロードして、```open localtonet```までする。これでシェルが開く。
 2. https://localtonet.com/ にアクセスして、無料プランのアカウントを作り、ダッシュボードに移動して、AuthTokenをコピーする。
 3. シェルにコピーしてAuthTokenをペーストする。
-4. [このリンク](https://localtonet.com/documents/udp) を参考にダッシュボードでトンネリングをする。入力するIPとポートはローカルの使いたいもの。AuthTokenはDefaultのFreeのもの。
+4. [このリンク](https://localtonet.com/documents/udp) を参考にダッシュボードでトンネリングをする。入力するIPとポート(50000とか大きい数字にする)はローカルの使いたいもの。AuthTokenはDefaultのFreeのもの。
+また、wifiに繋ぎかえるたびにIPは変わるので、その度に```ifconfig```などで確認する。
 5. スタートをし、シェルでも```Status OK```となっていることを確認する。
 6. soxコマンドが入っていなければ、```brew install sox```
 

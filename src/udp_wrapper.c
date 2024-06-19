@@ -16,7 +16,7 @@
 #define ACK_SYN "bb"
 #define data "d"
 #define header_bytes 2
-#define N 100
+#define N 10000
 
 void set_recv_timeout(int s, int sec, int usec);
 
@@ -43,7 +43,7 @@ int set_udp_server(int port) {
 unsigned long get_ip_address(char *str_addr) {
     struct in_addr ip_addr;
 
-    // IPアドレスとして解析を試みる
+	// IPアドレスとして解析を試みる
     if (inet_pton(AF_INET, str_addr, &ip_addr) == 1) {
         return ip_addr.s_addr;
     }

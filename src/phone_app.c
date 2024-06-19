@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 		printf("Connect to server\n");
 	}
 	FILE *fp;
-    char *cmdline = "rec -t raw -b 16 -c 1 -e s -r 44100 -";
+    char *cmdline = "rec -t raw -b 16 -c 1 -e s -r 48000 -";
     if ((fp=popen(cmdline, "r")) == NULL) {
         perror ("popen failed");
         exit(EXIT_FAILURE);
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 
     /* タイムアウト時間を設定 */
     tv.tv_sec = 0;
-    tv.tv_usec = 100;
+    tv.tv_usec = 30;
 
     /* 読み込みFD集合を空にする */
     FD_ZERO(&readfds);

@@ -37,14 +37,14 @@ https://docs.google.com/presentation/d/1tWqSmZ0ghf1Xom8pAZousgrSz0tkc6N_2IPybLRH
 ```bash
 mkdir bin
 make
-./bin/thread <自分のlocaltonetのURL> <自分のlocaltonetのport> <サーバーのlocaltonetのURL> <サーバーのlocaltonetのport> <自分のlocaltonetにトンネルしてるポート> | play -t raw -b 16 -c 1 -e s -r 48000 -
+./bin/phone <自分のlocaltonetのURL> <自分のlocaltonetのport> <サーバーのlocaltonetのURL> <サーバーのlocaltonetのport> <自分のlocaltonetにトンネルしてるポート> | play -t raw -b 16 -c 1 -e s -r 48000 -
 ```
 
 サーバー側
 ```bash
 mkdir bin
 make
-./bin/thread <自分のlocaltonetにトンネルしてるポート> | play -t raw -b 16 -c 1 -e s -r 48000 -
+./bin/phone <自分のlocaltonetにトンネルしてるポート> | play -t raw -b 16 -c 1 -e s -r 48000 -
 ```
 
 クライアント側とサーバー側のどちらからコマンドを実行しても問題ない

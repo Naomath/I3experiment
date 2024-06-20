@@ -51,7 +51,7 @@ unsigned long get_ip_address(char *str_addr) {
     // 失敗した場合、ホスト名として解析を試みる
     struct hostent *host = gethostbyname(str_addr);
     if (host == NULL) {
-        fprintf(stderr, "Failed to resolve %s to IP address.\n", str_addr);
+        perror("Failed to resolve %s to IP address.\n");
         exit(1);
     }
 

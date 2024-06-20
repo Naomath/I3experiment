@@ -84,15 +84,5 @@ int main(int argc, char **argv) {
         }
 
     }
-    /*
-    while(1) {
-		int send_size = read(fd, send_data, N);
-		sendto(tools->socket, send_data, send_size, 0 , (struct sockaddr *)tools->partner, sizeof(*(tools->partner)));
-		struct sockaddr_in client;
-		socklen_t client_len = sizeof(client);
-		int n = recvfrom(tools->socket, recv_data, N, 0, (struct sockaddr *)&client, &client_len);
-        write(1, recv_data, n);
-	}
-    */
 	pclose(fp);
 }
